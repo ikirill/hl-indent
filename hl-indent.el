@@ -190,18 +190,9 @@
   :group 'hl-indent
   :type '(boolean))
 
-(defvar-local hl-indent-mode
-  nil
-  "Mode for highlighting indentation levels.
-(Should work for just about anything, though intended for lisp and haskell).")
+(defvar hl-indent-mode-blocks)
 
-(defvar-local hl-indent-mode-blocks
-  nil
-  "Flag for highlighting blocks of code instead of indentation levels.
-
-See hl-indent-mode.el.")
-
-(defvar-local hl-indent--current-indent
+(defvar hl-indent--current-indent
   nil
   "List containing previously encountered indentation levels.
 
@@ -209,6 +200,7 @@ For example, '(5 2 0) means that indentation highlights should be
 drawn at 0, 2, and 5 spaces away from line beginning; the current
 line will add a new offset if it is to the right of right-most
 offset, or delete some offsets if it is to the left of it.")
+(make-variable-buffer-local 'hl-indent--current-indent)
 
 (defcustom hl-indent--skip-line-regexp
   "^\\( *$\\|#\\sw\\|\t\\)"
@@ -556,7 +548,7 @@ xxxxxxxxxxxxxx
     **********
 xxxxxxxxxxxxxx
 
-(where different symbols represent different colours).
+where different symbols represent different colours.
 
 To use:
 
