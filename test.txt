@@ -12,6 +12,8 @@
                again))
 
 ;; Local Variables:
+;; mode: emacs-lisp
+;; eval: (when (fboundp 'hl-indent-mode) (hl-indent-mode))
 ;; electric-indent-mode: nil
 ;; eval: (when (fboundp (quote flycheck-mode)) (flycheck-mode -1))
 ;; End:
