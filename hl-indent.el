@@ -371,6 +371,11 @@ following lines, otherwise scan all of the them."
     ;; (message "point %d:  %d,  %d:  \"%s\"" (point) (line-end-position) (1- (line-beginning-position 2)) (buffer-substring (point) (min (line-end-position) (+ 4 (point) (save-excursion (skip-syntax-forward " " (line-end-position)))))))
     (skip-syntax-forward " " (line-end-position))))
 
+(defun hl-indent--face-for-level (level)
+  (intern (format "hl-indent-block-face-%s"
+                  (1+ (mod (cl-position level (reverse hl-indent--current-indent))
+                           (length hl-indent--current-indent))))))
+
 (defun hl-indent--scan-line (&optional stop-soon)
   "Highlight indentation levels on the current line.
 The variable `hl-indent--current-indent' will contain indentation levels
@@ -391,7 +396,7 @@ correctly on the next line."
         (setq hl-indent--current-indent (cdr hl-indent--current-indent)))
       (dolist (level hl-indent--current-indent)
         (let* ((pos (+ line-start level))
-               (o (hl-indent--make-overlay pos (1+ pos) 'hl-indent-face)))
+               (o (hl-indent--make-overlay pos (1+ pos) (hl-indent--face-for-level level))))
           (when hl-indent-mode-blocks
             (overlay-put o 'face nil))))
       (when (and hl-indent-mode-blocks
