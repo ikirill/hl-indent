@@ -225,6 +225,12 @@ looks bad."
   :type 'boolean
   :group 'hl-indent)
 
+(defcustom hl-indent-color-indents
+  nil
+  "Whether indent highlights should be colored or not."
+  :type 'boolean
+  :group 'hl-indent)
+
 ;; }}}
 ;; {{{ Overlay handling
 
@@ -396,7 +402,10 @@ correctly on the next line."
         (setq hl-indent--current-indent (cdr hl-indent--current-indent)))
       (dolist (level hl-indent--current-indent)
         (let* ((pos (+ line-start level))
-               (o (hl-indent--make-overlay pos (1+ pos) (hl-indent--face-for-level level))))
+               (face (if hl-indent-color-indents
+                         (hl-indent--face-for-level level)
+                       'hl-indent-face))
+               (o (hl-indent--make-overlay pos (1+ pos) face)))
           (when hl-indent-mode-blocks
             (overlay-put o 'face nil))))
       (when (and hl-indent-mode-blocks
